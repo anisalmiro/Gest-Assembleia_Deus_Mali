@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\Expense;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class ExpensesSheet implements FromCollection, WithHeadings
 {

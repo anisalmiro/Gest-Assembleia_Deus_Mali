@@ -36,7 +36,7 @@
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="last_name" class="form-label">Sobrenome *</label>
+                    <label for="last_name" class="form-label">Apelido *</label>
                     <input type="text" class="form-control @error('last_name') is-invalid @enderror"
                            id="last_name" name="last_name" value="{{ old('last_name') }}" required>
                     @error('last_name')
@@ -91,8 +91,8 @@
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label for="marital_status" class="form-label">Estado Civil *</label>
-                    <select class="form-select @error('marital_status') is-invalid @enderror"
-                            id="marital_status" name="marital_status" required onchange="toggleMarriageDate()">
+
+                        <select id="marital_status" name="marital_status" class="form-select" onchange="toggleMarriageFields()">
                         <option value="">Selecione...</option>
                         <option value="solteiro" {{ old('marital_status') === 'solteiro' ? 'selected' : '' }}>Solteiro(a)</option>
                         <option value="casado" {{ old('marital_status') === 'casado' ? 'selected' : '' }}>Casado(a)</option>
@@ -119,12 +119,13 @@
                     </select>
                 </div>
 
-                <div class="col-md-4 mb-3" id="date_baptism_group" style="display: none;">
+                <div class="col-md-4 mb-3" id="baptism_group" style="display: none;">
+                <div class="col-md-4 mb-3">
                     <label for="date_baptism" class="form-label">Data do Batismo</label>
                     <input type="date" class="form-control" id="date_baptism" name="date_baptism" value="{{ old('date_baptism') }}">
                 </div>
 
-                <div class="col-md-4 mb-3 id="baptism_group" style="display: none;">
+                <div class="col-md-4 mb-3">
                     <label for="batizad_from_marriag" class="form-label">Batizado após o casamento?</label>
                     <select class="form-select" name="batizad_from_marriag" id="batizad_from_marriag">
                         <option value="">Selecione...</option>
@@ -132,6 +133,7 @@
                         <option value="n" {{ old('batizad_from_marriag') == 'n' ? 'selected' : '' }}>Não</option>
                     </select>
                 </div>
+        </div>
             </div>
 
             <div class="row">
@@ -232,8 +234,18 @@
                     @error('photo')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+
+                    @if(isset($member) && $member->photo)
+                    <div class="mt-3">
+                        <p><strong>Foto Atual:</strong></p>
+                        <img src="{{ asset('storage/' . $member->photo) }}"
+                             alt="Foto de {{ $member->first_name }}"
+                             class="img-thumbnail" style="max-width: 200px;">
+                    </div>
+                    @endif
                 </div>
             </div>
+
 
             <div class="mb-3">
                 <label for="notes" class="form-label">Observações</label>
@@ -385,34 +397,17 @@ function toggleChurchNameField() {
     });
 
 
-function toggleMarriageDate() {
-        const maritalStatus = document.getElementById('marital_status').value;
-        const marriageDateGroup = document.getElementById('date_marriag_group');
 
-        if (maritalStatus === 'casado') {
-        marriageDateGroup.style.display = 'block';
-    } else {
-        marriageDateGroup.style.display = 'none';
-        document.getElementById('date_marriag').value = ''; // limpa valor se esconder
-    }
-    }
-
-        document.addEventListener('DOMContentLoaded', function () {
-        toggleMarriageDate(); // inicializa com valor antigo, se houver
-    });
 
 function toggleBaptismDate(value) {
-        const group = document.getElementById('date_baptism_group');
-        const group2 = document.getElementById('baptism_group');
+        const group = document.getElementById('baptism_group');
 
         if (value === 'y') {
         group.style.display = 'block';
-        group2.style.display = 'block';
+
 
     } else {
         group.style.display = 'none';
-        group2.style.display = 'none';
-
         document.getElementById('date_baptism').value = ''; // Limpa se ocultar
     }
     }
@@ -427,16 +422,26 @@ function toggleBaptismDate(value) {
 
 let childCount = 0;
 
-function toggleSpouseFields() {
-    const maritalStatus = document.getElementById('marital_status').value;
-    const spouseSection = document.getElementById('spouse-section');
+        function toggleMarriageFields() {
+            const maritalStatus = document.getElementById('marital_status').value;
 
-    if (maritalStatus === 'casado') {
-        spouseSection.style.display = 'block';
-    } else {
-        spouseSection.style.display = 'none';
-    }
-}
+            const marriageDateGroup = document.getElementById('date_marriag_group');
+            const marriageDateInput = document.getElementById('date_marriag');
+            const spouseSection = document.getElementById('spouse-section');
+
+            if (maritalStatus === 'casado') {
+                if (marriageDateGroup) marriageDateGroup.style.display = 'block';
+                if (spouseSection) spouseSection.style.display = 'block';
+            } else {
+                if (marriageDateGroup) marriageDateGroup.style.display = 'none';
+                if (spouseSection) spouseSection.style.display = 'none';
+                if (marriageDateInput) marriageDateInput.value = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleMarriageFields(); // Inicializa com base no valor selecionado
+        });
 
 function addChild() {
     childCount++;
@@ -495,10 +500,6 @@ function removeChild(childId) {
     }
 }
 
-// Verificar se deve mostrar seção da esposa ao carregar a página
-document.addEventListener('DOMContentLoaded', function() {
-    toggleSpouseFields();
-});
 
 
         function togglePositionInput(value) {

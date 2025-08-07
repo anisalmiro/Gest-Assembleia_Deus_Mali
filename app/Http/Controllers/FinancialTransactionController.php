@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FinancialTransaction;
+use App\Exports\FinancialReportExport;
 use App\Models\Member;
 
 class FinancialTransactionController extends Controller
@@ -16,7 +17,7 @@ class FinancialTransactionController extends Controller
         $transactions = FinancialTransaction::with('member')
             ->orderBy('transaction_date', 'desc')
             ->paginate(15);
-        
+
         return view('financial-transactions.index', compact('transactions'));
     }
 
@@ -36,7 +37,7 @@ class FinancialTransactionController extends Controller
     {
         $validated = $request->validate([
             'member_id' => 'nullable|exists:members,id',
-            'type' => 'required|in:tithe,donation,collection',
+            'type' => 'required|in:dizimo,doacao,colecta,colecta_missoes,accao_social,agradecimentos,jovens,celula_central,celula_2,celula_3,celula_4,celula_5,celula_6,celula_7,celula_8,dizimos_dos_dizimos,xicotelas',
             'amount' => 'required|numeric|min:0.01',
             'transaction_date' => 'required|date',
             'notes' => 'nullable|string',
@@ -73,7 +74,7 @@ class FinancialTransactionController extends Controller
     {
         $validated = $request->validate([
             'member_id' => 'nullable|exists:members,id',
-            'type' => 'required|in:tithe,donation,collection',
+            'type' => 'required|in:dizimo,doacao,colecta,colecta_missoes,accao_social,agradecimentos,jovens,celula_central,celula_2,celula_3,celula_4,celula_5,celula_6,celula_7,celula_8,dizimos_dos_dizimos,xicotelas',
             'amount' => 'required|numeric|min:0.01',
             'transaction_date' => 'required|date',
             'notes' => 'nullable|string',
@@ -91,7 +92,7 @@ class FinancialTransactionController extends Controller
     public function destroy(FinancialTransaction $financialTransaction)
     {
         $financialTransaction->delete();
-        
+
         return redirect()->route('financial-transactions.index')
             ->with('success', 'Transação financeira removida com sucesso!');
     }

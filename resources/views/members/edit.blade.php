@@ -10,7 +10,9 @@
 @endsection
 
 @section('content')
-<form action="{{ route('members.update', $member) }}" method="POST">
+
+    <form action="{{ route('members.update', $member) }}" method="POST" enctype="multipart/form-data">
+
     @csrf
     @method('PUT')
 
@@ -35,7 +37,7 @@
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="last_name" class="form-label">Sobrenome *</label>
+                    <label for="last_name" class="form-label">Apelido *</label>
                     <input type="text" class="form-control @error('last_name') is-invalid @enderror"
                            id="last_name" name="last_name"
                            value="{{ old('last_name', $member->last_name) }}" required>
@@ -72,13 +74,13 @@
 
                 <div class="col-md-4 mb-3">
                     <label for="marital_status" class="form-label">Estado Civil *</label>
-                    <select class="form-select @error('marital_status') is-invalid @enderror"
-                            id="marital_status" name="marital_status" required onchange="toggleSpouseFields()">
+
+                    <select id="marital_status" name="marital_status" class="form-select" onchange="toggleMarriageFields()">
                         <option value="">Selecione...</option>
-                        <option value="single" {{ old('marital_status', $member->marital_status) === 'single' ? 'selected' : '' }}>Solteiro(a)</option>
-                        <option value="married" {{ old('marital_status', $member->marital_status) === 'married' ? 'selected' : '' }}>Casado(a)</option>
-                        <option value="divorced" {{ old('marital_status', $member->marital_status) === 'divorced' ? 'selected' : '' }}>Divorciado(a)</option>
-                        <option value="widowed" {{ old('marital_status', $member->marital_status) === 'widowed' ? 'selected' : '' }}>Viúvo(a)</option>
+                        <option value="solteiro" {{ old('marital_status') === 'solteiro' ? 'selected' : '' }}>Solteiro(a)</option>
+                        <option value="casado" {{ old('marital_status') === 'casado' ? 'selected' : '' }}>Casado(a)</option>
+                        <option value="divorciado" {{ old('marital_status') === 'divorciado' ? 'selected' : '' }}>Divorciado(a)</option>
+                        <option value="viuvo" {{ old('marital_status') === 'viuvo' ? 'selected' : '' }}>Viúvo(a)</option>
                     </select>
                     @error('marital_status')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -138,8 +140,122 @@
             </div>
         </div>
     </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-church me-2"></i> Informações Complementares
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="profition" class="form-label">Profissão</label>
+                        <input type="text" class="form-control" id="profition" name="profition"
+                               value="{{ old('profition', $member->profition) }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="province_bith" class="form-label">Província de Nascimento</label>
+                        <input type="text" class="form-control" id="province_bith" name="province_bith"
+                               value="{{ old('province_bith', $member->province_bith) }}">
+                    </div>
+                </div>
 
-    <!-- Resto das seções: esposa, filhos, etc. -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="neighborhood" class="form-label">Bairro</label>
+                        <input type="text" class="form-control" id="neighborhood" name="neighborhood"
+                               value="{{ old('neighborhood', $member->neighborhood) }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="date_marriag" class="form-label">Data do Casamento</label>
+                        <input type="date" class="form-control" id="date_marriag" name="date_marriag"
+                               value="{{ old('date_marriag', $member->date_marriag) }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="baptized" class="form-label">Batizado?</label>
+                        <select class="form-select" id="baptized" name="baptized">
+                            <option value="">Selecione...</option>
+                            <option value="y" {{ old('baptized', $member->baptized) == 'y' ? 'selected' : '' }}>Sim</option>
+                            <option value="n" {{ old('baptized', $member->baptized) == 'n' ? 'selected' : '' }}>Não</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="marriag_church" class="form-label">Casado na Igreja?</label>
+                        <select class="form-select" id="marriag_church" name="marriag_church">
+                            <option value="">Selecione...</option>
+                            <option value="y" {{ old('marriag_church', $member->marriag_church) == 'y' ? 'selected' : '' }}>Sim</option>
+                            <option value="n" {{ old('marriag_church', $member->marriag_church) == 'n' ? 'selected' : '' }}>Não</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="church_name_marriag" class="form-label">Nome da Igreja do Casamento</label>
+                        <input type="text" class="form-control" id="church_name_marriag" name="church_name_marriag"
+                               value="{{ old('church_name_marriag', $member->church_name_marriag) }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="date_baptism" class="form-label">Data do Batismo</label>
+                        <input type="date" class="form-control" id="date_baptism" name="date_baptism"
+                               value="{{ old('date_baptism', $member->date_baptism) }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="batizad_from_marriag" class="form-label">Batizado depois do Casamento?</label>
+                        <select class="form-select" id="batizad_from_marriag" name="batizad_from_marriag" required>
+                            <option value="">Selecione...</option>
+                            <option value="y" {{ old('batizad_from_marriag', $member->batizad_from_marriag) == 'y' ? 'selected' : '' }}>Sim</option>
+                            <option value="n" {{ old('batizad_from_marriag', $member->batizad_from_marriag) == 'n' ? 'selected' : '' }}>Não</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="has_position_church" class="form-label">Tem Cargo na Igreja?</label>
+                        <select class="form-select" id="has_position_church" name="has_position_church" required>
+                            <option value="">Selecione...</option>
+                            <option value="y" {{ old('has_position_church', $member->has_position_church) == 'y' ? 'selected' : '' }}>Sim</option>
+                            <option value="n" {{ old('has_position_church', $member->has_position_church) == 'n' ? 'selected' : '' }}>Não</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="position" class="form-label">Cargo</label>
+                        <input type="text" class="form-control" id="position" name="position"
+                               value="{{ old('position', $member->position) }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-camera me-2"></i> Foto do Membro
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="photo" class="form-label">Upload da Foto</label>
+                    <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo" accept="image/*">
+                    @error('photo')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                @if($member->photo)
+                <div class="mb-3">
+                    <label>Foto Atual:</label><br>
+                    <img src="{{ asset('storage/members_photos/' . $member->photo) }}" alt="Foto de {{ $member->first_name }}"
+                         class="img-thumbnail" style="max-width: 200px;">
+                </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Resto das seções: esposa, filhos, etc. -->
     <!-- Reaproveite o mesmo código de criação, mas use os valores de $member->spouse e $member->children, se desejado -->
 
     <!-- Botões -->
@@ -156,8 +272,5 @@
 
 @section('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        toggleSpouseFields();
-    });
-</script>
+
 @endsection

@@ -1,49 +1,72 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\FinancialTransactionController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
 
-// Rota principal - Dashboard
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-
-// Rotas para gerenciamento de membros (crentes)
-Route::resource('members', MemberController::class);
-
-// Rotas para gerenciamento de patrimônio (itens da igreja)
-Route::resource('assets', AssetController::class);
-
-// Rotas para transações financeiras (dízimos, doações, coletas)
-Route::resource('financial-transactions', FinancialTransactionController::class);
-
-// Rotas para despesas (saídas)
-Route::resource('expenses', ExpenseController::class);
-
-// Rotas específicas para relatórios
-#Route::get('/reports/financial', [DashboardController::class, 'financialReport'])->name('reports.financial');
-Route::get('/reports/members', [DashboardController::class, 'membersReport'])->name('reports.members');
-Route::get('/reports/assets', [DashboardController::class, 'assetsReport'])->name('reports.assets');
-Route::get('reports/members/export', [DashboardController::class, 'exportMembers'])->name('reports.members.export');
-
-Route::prefix('reports')->group(function () {
-    Route::get('/financial', [DashboardController::class, 'financialReport'])->name('reports.financial');
-
-    // Rota para exportar relatório financeiro em Excel ou PDF
-    Route::get('/financial/export', [DashboardController::class, 'financialReportExport'])->name('reports.financial.export');
+// Rota raiz redireciona para dashboard
+Route::get('/', function () {
+    return redirect()->route('dashboard');
 });
-// Rota para exportar ativos (Excel ou PDF), recebe parâmetro 'format' na query string
-Route::get('reports/assets/export', [DashboardController::class, 'exportAssets'])->name('reports.assets.export');
+
+// Dashboard (protegido por auth e email verificado)
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+// Rotas protegidas por autenticação
+Route::middleware('auth')->group(function () {
+
+    Route::get('register', [RegisteredUserController::class, 'create'])
+        ->name('register');
+
+    Route::post('register', [RegisteredUserController::class, 'store']);
+
+   // Perfil (se quiser habilitar futuramente)
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // CRUD de Membros
+    Route::resource('members', MemberController::class);
+
+    // CRUD de Bens Patrimoniais
+    Route::resource('assets', AssetController::class);
+
+    // CRUD de Transações Financeiras
+    Route::resource('financial-transactions', FinancialTransactionController::class);
+
+    // CRUD de Despesas
+    Route::resource('expenses', ExpenseController::class);
+
+    // Relatórios
+    Route::prefix('reports')->group(function () {
+        Route::get('/members', [DashboardController::class, 'membersReport'])->name('reports.members');
+        Route::get('/members/export', [DashboardController::class, 'exportMembers'])->name('reports.members.export');
+
+        Route::get('/assets', [DashboardController::class, 'assetsReport'])->name('reports.assets');
+        Route::get('/assets/export', [DashboardController::class, 'exportAssets'])->name('reports.assets.export');
+
+        Route::get('/financial', [DashboardController::class, 'financialReport'])->name('reports.financial');
+        Route::get('/financial/export', [DashboardController::class, 'financialReportExport'])->name('reports.financial.export');
+    });
+
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');      // Listar usuários
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit'); // Formulário edição
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');  // Atualizar usuário
+});
+
+require __DIR__.'/auth.php';
+// Rotas de autenticação

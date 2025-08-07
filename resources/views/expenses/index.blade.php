@@ -13,9 +13,9 @@
     <table class="table table-bordered">
         <thead>
         <tr>
+            <th>Categoria</th>
             <th>Descrição</th>
             <th>Valor</th>
-            <th>Categoria</th>
             <th>Data</th>
             <th>Ações</th>
         </tr>
@@ -23,9 +23,9 @@
         <tbody>
         @foreach ($expenses as $expense)
         <tr>
+            <td>{{ Str::upper($expense->category) }}</td>
             <td>{{ $expense->description }}</td>
             <td>{{ number_format($expense->amount, 2, ',', '.') }} MZN</td>
-            <td>{{ $expense->category }}</td>
             <td>{{ \Carbon\Carbon::parse($expense->expense_date)->format('d/m/Y') }}</td>
             <td>
                 <a href="{{ route('expenses.show', $expense) }}" class="btn btn-info btn-sm">Ver</a>

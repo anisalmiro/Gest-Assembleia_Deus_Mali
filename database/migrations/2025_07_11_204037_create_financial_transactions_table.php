@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('financial_transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('member_id')->nullable()->constrained('members')->onDelete('set null');
-            $table->enum('type', ['tithe', 'donation', 'collection']);
+            $table->text('type',255);
             $table->decimal('amount', 10, 2);
             $table->datetime('transaction_date');
             $table->text('notes')->nullable();

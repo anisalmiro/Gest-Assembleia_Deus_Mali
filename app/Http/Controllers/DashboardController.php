@@ -23,17 +23,76 @@ class DashboardController extends Controller
 
         // Transações financeiras do mês atual
         $currentMonth = now()->format('Y-m');
-        $monthlyTithes = FinancialTransaction::where('type', 'tithe')
+        $currentMonth = now()->format('Y-m');
+
+        $monthlyTithes = FinancialTransaction::where('type', 'dizimo')
             ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
             ->sum('amount');
 
-        $monthlyDonations = FinancialTransaction::where('type', 'donation')
+        $monthlyDonations = FinancialTransaction::where('type', 'doacao')
             ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
             ->sum('amount');
 
-        $monthlyCollections = FinancialTransaction::where('type', 'collection')
+        $monthlyCollections = FinancialTransaction::where('type', 'colecta')
             ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
             ->sum('amount');
+
+        $monthlyMissionCollections = FinancialTransaction::where('type', 'colecta_missoes')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlySocialActions = FinancialTransaction::where('type', 'accao_social')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyThanksgivings = FinancialTransaction::where('type', 'agradecimentos')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyYouth = FinancialTransaction::where('type', 'jovens')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyCentralCell = FinancialTransaction::where('type', 'celula_central')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyCell2 = FinancialTransaction::where('type', 'celula_2')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyCell3 = FinancialTransaction::where('type', 'celula_3')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyCell4 = FinancialTransaction::where('type', 'celula_4')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyCell5 = FinancialTransaction::where('type', 'celula_5')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyCell6 = FinancialTransaction::where('type', 'celula_6')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyCell7 = FinancialTransaction::where('type', 'celula_7')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyCell8 = FinancialTransaction::where('type', 'celula_8')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyTitheOfTithes = FinancialTransaction::where('type', 'dizimos_dos_dizimos')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
+        $monthlyXicotelas = FinancialTransaction::where('type', 'xicotelas')
+            ->whereRaw("DATE_FORMAT(transaction_date, '%Y-%m') = ?", [$currentMonth])
+            ->sum('amount');
+
 
         $monthlyExpenses = Expense::whereRaw("DATE_FORMAT(expense_date, '%Y-%m') = ?", [$currentMonth])
             ->sum('amount');
@@ -58,9 +117,24 @@ class DashboardController extends Controller
             'monthlyDonations',
             'monthlyCollections',
             'monthlyExpenses',
+            'monthlyMissionCollections',
+            'monthlySocialActions',
+            'monthlyThanksgivings',
+            'monthlyYouth',
+            'monthlyCentralCell',
+            'monthlyCell2',
+            'monthlyCell3',
+            'monthlyCell4',
+            'monthlyCell5',
+            'monthlyCell6',
+            'monthlyCell7',
+            'monthlyCell8',
+            'monthlyTitheOfTithes',
+            'monthlyXicotelas',
             'recentTransactions',
             'recentExpenses'
         ));
+
     }
 
     public function financialReport(Request $request)

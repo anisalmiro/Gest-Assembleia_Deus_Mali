@@ -31,7 +31,6 @@ return new class extends Migration
             $table->date('date_baptism')->nullable();
             $table->enum('batizad_from_marriag', ['y', 'n']);
             $table->enum('has_position_church', ['y', 'n']);
-            $table->enum('has_position_church', ['y', 'n']);
             $table->text('position')->nullable();
             $table->date('date_joined');
             $table->text('notes')->nullable();

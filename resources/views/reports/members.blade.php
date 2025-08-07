@@ -26,14 +26,29 @@
         </div>
 
         <div class="col-md-3">
-            <label for="donation_type" class="form-label">Tipo de Doação</label>
-            <select name="donation_type" id="donation_type" class="form-select">
+            <label for="type" class="form-label">Tipo de Doação</label>
+            <select id="type" name="type" class="form-select">
                 <option value="">Todos</option>
-                <option value="tithe" {{ request('donation_type') == 'tithe' ? 'selected' : '' }}>Dízimo</option>
-                <option value="donation" {{ request('donation_type') == 'donation' ? 'selected' : '' }}>Doação</option>
-                <option value="collection" {{ request('donation_type') == 'collection' ? 'selected' : '' }}>Coleta</option>
+                <option value="dizimo" {{ request('type') == 'dizimo' ? 'selected' : '' }}>Dízimo</option>
+                <option value="doacao" {{ request('type') == 'doacao' ? 'selected' : '' }}>Doação</option>
+                <option value="colecta" {{ request('type') == 'colecta' ? 'selected' : '' }}>Coleta</option>
+                <option value="colecta_missoes" {{ request('type') == 'colecta_missoes' ? 'selected' : '' }}>Coleta Missões</option>
+                <option value="accao_social" {{ request('type') == 'accao_social' ? 'selected' : '' }}>Ação Social</option>
+                <option value="agradecimentos" {{ request('type') == 'agradecimentos' ? 'selected' : '' }}>Agradecimentos</option>
+                <option value="jovens" {{ request('type') == 'jovens' ? 'selected' : '' }}>Jovens</option>
+                <option value="celula_central" {{ request('type') == 'celula_central' ? 'selected' : '' }}>Célula Central</option>
+                <option value="celula_2" {{ request('type') == 'celula_2' ? 'selected' : '' }}>Célula 2</option>
+                <option value="celula_3" {{ request('type') == 'celula_3' ? 'selected' : '' }}>Célula 3</option>
+                <option value="celula_4" {{ request('type') == 'celula_4' ? 'selected' : '' }}>Célula 4</option>
+                <option value="celula_5" {{ request('type') == 'celula_5' ? 'selected' : '' }}>Célula 5</option>
+                <option value="celula_6" {{ request('type') == 'celula_6' ? 'selected' : '' }}>Célula 6</option>
+                <option value="celula_7" {{ request('type') == 'celula_7' ? 'selected' : '' }}>Célula 7</option>
+                <option value="celula_8" {{ request('type') == 'celula_8' ? 'selected' : '' }}>Célula 8</option>
+                <option value="dizimos_dos_dizimos" {{ request('type') == 'dizimos_dos_dizimos' ? 'selected' : '' }}>Dízimos dos Dízimos</option>
+                <option value="xicotelas" {{ request('type') == 'xicotelas' ? 'selected' : '' }}>Xicotelas</option>
             </select>
         </div>
+
 
         <div class="col-md-3 d-flex gap-2">
             <button type="submit" class="btn btn-primary">Filtrar</button>
@@ -43,9 +58,9 @@
 
     {{-- Botões para exportar --}}
     <div class="mb-3">
-        <a href="{{ route('reports.members.export', array_merge(request()->all(), ['format' => 'excel'])) }}" class="btn btn-success me-2">
-            <i class="fas fa-file-excel"></i> Exportar Excel
-        </a>
+<!--        <a href="{{ route('reports.members.export', array_merge(request()->all(), ['format' => 'excel'])) }}" class="btn btn-success me-2">-->
+<!--            <i class="fas fa-file-excel"></i> Exportar Excel-->
+<!--        </a>-->
         <a href="{{ route('reports.members.export', array_merge(request()->all(), ['format' => 'pdf'])) }}" class="btn btn-danger">
             <i class="fas fa-file-pdf"></i> Exportar PDF
         </a>

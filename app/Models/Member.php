@@ -17,9 +17,21 @@ class Member extends Model
         'address',
         'phone_number',
         'email',
+        'profition',
+        'province_bith',
+        'neighborhood',
         'marital_status',
+        'date_marriag',
+        'baptized',
+        'marriag_church',
+        'church_name_marriag',
+        'date_baptism',
+        'batizad_from_marriag',
+        'has_position_church',
+        'position',
         'date_joined',
-        'notes'
+        'notes',
+        'photo'
     ];
 
     protected $casts = [

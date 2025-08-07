@@ -20,13 +20,26 @@
                     <li class="list-group-item"><strong>Gênero:</strong> {{ ucfirst($member->gender) }}</li>
                     <li class="list-group-item"><strong>Data de Nascimento:</strong> {{ \Carbon\Carbon::parse($member->date_of_birth)->format('d/m/Y') }}</li>
                     <li class="list-group-item"><strong>Estado Civil:</strong> {{ ucfirst($member->marital_status) }}</li>
+                    <li class="list-group-item"><strong>Data de Casamento:</strong> {{ $member->date_marriag ? \Carbon\Carbon::parse($member->date_marriag)->format('d/m/Y') : '---' }}</li>
+                    <li class="list-group-item"><strong>Batizado:</strong> {{ $member->baptized == 'y' ? 'Sim' : 'Não' }}</li>
+                    <li class="list-group-item"><strong>Batizado antes do casamento:</strong> {{ $member->batizad_from_marriag == 'y' ? 'Sim' : 'Não' }}</li>
+                    <li class="list-group-item"><strong>Data do Batismo:</strong> {{ $member->date_baptism ? \Carbon\Carbon::parse($member->date_baptism)->format('d/m/Y') : '---' }}</li>
+                    <li class="list-group-item"><strong>Casado na Igreja:</strong> {{ $member->marriag_church == 'y' ? 'Sim' : 'Não' }}</li>
+                    <li class="list-group-item"><strong>Igreja do Casamento:</strong> {{ $member->church_name_marriag ?? '---' }}</li>
+                    <li class="list-group-item"><strong>Tem cargo na igreja:</strong> {{ $member->has_position_church == 'y' ? 'Sim' : 'Não' }}</li>
+                    <li class="list-group-item"><strong>Cargo:</strong> {{ $member->position ?? '---' }}</li>
+                    <li class="list-group-item"><strong>Profissão:</strong> {{ $member->profition ?? '---' }}</li>
+                    <li class="list-group-item"><strong>Província de Nascimento:</strong> {{ $member->province_bith ?? '---' }}</li>
+                    <li class="list-group-item"><strong>Bairro:</strong> {{ $member->neighborhood ?? '---' }}</li>
                     <li class="list-group-item"><strong>Data de Ingresso:</strong> {{ \Carbon\Carbon::parse($member->date_joined)->format('d/m/Y') }}</li>
-                    <li class="list-group-item"><strong>Endereço:</strong> {{ $member->address }}</li>
-                    <li class="list-group-item"><strong>Telefone:</strong> {{ $member->phone_number }}</li>
-                    <li class="list-group-item"><strong>Email:</strong> {{ $member->email }}</li>
-                    <li class="list-group-item"><strong>Notas:</strong> {{ $member->notes }}</li>
+                    <li class="list-group-item"><strong>Endereço:</strong> {{ $member->address ?? '---' }}</li>
+                    <li class="list-group-item"><strong>Telefone:</strong> {{ $member->phone_number ?? '---' }}</li>
+                    <li class="list-group-item"><strong>Email:</strong> {{ $member->email ?? '---' }}</li>
+                    <li class="list-group-item"><strong>Notas:</strong> {{ $member->notes ?? '---' }}</li>
                 </ul>
+
             </div>
+
             <div class="col-md-6">
                 <h5>Informações Familiares</h5>
                 @if($member->spouse)
@@ -55,6 +68,16 @@
                 @else
                 <p class="text-muted">Nenhuma transação registada.</p>
                 @endif
+
+                @if($member->photo)
+                <div class="mb-3">
+                    <img src="{{ asset('storage/members_photos/' . $member->photo) }}"
+                         alt="Foto de {{ $member->first_name }}"
+                         class="img-thumbnail"
+                         style="max-width: 200px;">
+                </div>
+                @endif
+
             </div>
         </div>
         <a href="{{ route('members.index') }}" class="btn btn-secondary mt-3">

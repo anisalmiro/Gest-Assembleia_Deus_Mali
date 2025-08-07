@@ -18,11 +18,32 @@
     <div class="mb-3">
         <label>Tipo</label>
         <select name="type" class="form-control" required>
-            @foreach(['tithe' => 'Dízimo', 'donation' => 'Doação', 'collection' => 'Coleta'] as $key => $label)
-            <option value="{{ $key }}" {{ old('type', $transaction->type ?? '') == $key ? 'selected' : '' }}>{{ $label }}</option>
+            @foreach([
+            'dizimo' => 'Dízimo',
+            'doacao' => 'Doação',
+            'colecta' => 'Coleta',
+            'colecta_missoes' => 'Colecta de Missões',
+            'accao_social' => 'Acção social',
+            'agradecimentos' => 'Agradecimentos',
+            'jovens' => 'Jovens',
+            'celula_central' => 'Célula Central',
+            'celula_2' => 'Célula 2',
+            'celula_3' => 'Célula 3',
+            'celula_4' => 'Célula 4',
+            'celula_5' => 'Célula 5',
+            'celula_6' => 'Célula 6',
+            'celula_7' => 'Célula 7',
+            'celula_8' => 'Célula 8',
+            'dizimos_dos_dizimos' => 'Dízimos dos Dízimos',
+            'xicotelas' => 'Xicotelas'
+            ] as $key => $label)
+            <option value="{{ $key }}" {{ old('type', $transaction->type ?? '') == $key ? 'selected' : '' }}>
+            {{ $label }}
+            </option>
             @endforeach
         </select>
     </div>
+
 
     <div class="mb-3">
         <label>Valor</label>
