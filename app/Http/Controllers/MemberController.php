@@ -34,18 +34,20 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
+
+
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'date_of_birth' => 'required|date',
-            'gender' => 'required|in:male,female,other',
+            'gender' => 'required',
             'address' => 'nullable|string',
             'phone_number' => 'nullable|string|max:20',
             'email' => 'nullable|email|unique:members,email',
             'profition' => 'nullable|string|max:255',
             'province_bith' => 'nullable|string|max:255',
             'neighborhood' => 'nullable|string|max:255',
-            'marital_status' => 'required|in:solteiro,casado,divorciado,viuvo',
+            'marital_status' => 'required|in:solteiro,casado,divorciado,viuvo,uniao_factos',
             'date_marriag' => 'nullable|date',
             'baptized' => 'nullable|in:y,n',
             'marriag_church' => 'nullable|in:y,n',
@@ -70,8 +72,10 @@ class MemberController extends Controller
             'children.*.first_name' => 'required|string|max:255',
             'children.*.last_name' => 'required|string|max:255',
             'children.*.date_of_birth' => 'required|date',
-            'children.*.gender' => 'required|in:male,female,other',
+            'children.*.gender' => 'required|string|max:255',
         ]);
+
+        #dd($validated);
 
         // Gerenciar upload da foto
         if ($request->hasFile('photo')) {
@@ -80,7 +84,7 @@ class MemberController extends Controller
             $path = $file->storeAs('public/members_photos', $filename);
             $validated['photo'] = $filename;
         }
-
+       # dd($validated);
         // Criação do membro
         $member = Member::create($validated);
 
@@ -144,14 +148,14 @@ class MemberController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'date_of_birth' => 'required|date',
-            'gender' => 'required|in:male,female,other',
+            'gender' => 'required',
             'address' => 'nullable|string',
             'phone_number' => 'nullable|string|max:20',
             'email' => 'nullable|email|unique:members,email,' . $member->id,
             'profition' => 'nullable|string|max:255',
             'province_bith' => 'nullable|string|max:255',
             'neighborhood' => 'nullable|string|max:255',
-            'marital_status' => 'required|in:solteiro,casado,divorciado,viuvo',
+            'marital_status' => 'required|in:solteiro,casado,divorciado,viuvo,uniao_factos',
             'date_marriag' => 'nullable|date',
             'baptized' => 'nullable|in:y,n',
             'marriag_church' => 'nullable|in:y,n',

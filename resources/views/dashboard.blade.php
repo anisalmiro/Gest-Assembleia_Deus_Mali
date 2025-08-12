@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-
+    @if(auth()->check() && auth()->user()->role === 'admin')
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-success shadow h-100 py-2">
             <div class="card-body">
@@ -42,13 +42,6 @@
                                     $monthlyThanksgivings +
                                     $monthlyYouth +
                                     $monthlyCentralCell +
-                                    $monthlyCell2 +
-                                    $monthlyCell3 +
-                                    $monthlyCell4 +
-                                    $monthlyCell5 +
-                                    $monthlyCell6 +
-                                    $monthlyCell7 +
-                                    $monthlyCell8 +
                                     $monthlyTitheOfTithes +
                                     $monthlyXicotelas, 2, ',', '.') }}
                             </p></div>
@@ -67,12 +60,20 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                            Doações do Mês
+                            Valor total das Celulas
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">Meticais {{ number_format($monthlyDonations, 2, ',', '.') }}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">Total: MZN {{ number_format(
+                            $monthlyCell2 +
+                            $monthlyCell3 +
+                            $monthlyCell4 +
+                            $monthlyCell5 +
+                            $monthlyCell6 +
+                            $monthlyCell7 +
+                            $monthlyCell8
+                            , 2, ',', '.') }}</div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-heart fa-2x text-gray-300"></i>
+                        <i class="fas fa-hand-holding-usd fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
@@ -158,7 +159,16 @@
                         <p class="mb-1">Despesas: <strong>MZN {{ number_format($monthlyExpenses, 2, ',', '.') }}</strong></p>
                         <hr>
                         <p class="text-{{ ($monthlyTithes + $monthlyDonations + $monthlyCollections - $monthlyExpenses) >= 0 ? 'success' : 'danger' }}">
-                            <strong>Saldo: MZN {{ number_format($monthlyTithes + $monthlyDonations + $monthlyCollections - $monthlyExpenses, 2, ',', '.') }}</strong>
+                            <strong>Saldo: MZN {{ number_format($monthlyTithes +
+                                $monthlyDonations +
+                                $monthlyCollections +
+                                $monthlyMissionCollections +
+                                $monthlySocialActions +
+                                $monthlyThanksgivings +
+                                $monthlyYouth +
+                                $monthlyCentralCell +
+                                $monthlyTitheOfTithes +
+                                $monthlyXicotelas - $monthlyExpenses, 2, ',', '.') }}</strong>
                         </p>
                     </div>
                 </div>
@@ -166,6 +176,7 @@
         </div>
     </div>
 
+@endif
     <!-- Patrimônio -->
     <div class="col-lg-6 mb-4">
         <div class="card shadow">
@@ -181,10 +192,12 @@
                         <h4 class="text-primary">{{ $totalAssets }}</h4>
                         <p class="mb-0">Total de Itens</p>
                     </div>
+                    @if(auth()->check() && auth()->user()->role === 'admin')
                     <div class="col-md-6">
                         <h4 class="text-success">MZN {{ number_format($totalAssetsValue, 2, ',', '.') }}</h4>
                         <p class="mb-0">Valor Total</p>
                     </div>
+                    @endif
                 </div>
                 <div class="mt-3">
                     <a href="{{ route('assets.index') }}" class="btn btn-primary btn-sm">
@@ -196,7 +209,7 @@
         </div>
     </div>
 </div>
-
+@if(auth()->check() && auth()->user()->role === 'admin')
 <div class="row">
     <!-- Últimas Transações -->
     <div class="col-lg-6 mb-4">
@@ -261,6 +274,7 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
 
 <style>

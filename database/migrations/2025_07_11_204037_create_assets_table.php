@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->date('acquisition_date');
             $table->decimal('value', 10, 2);
-            $table->enum('status', ['new', 'good', 'damaged', 'discarded']);
+            $table->string('status');
             $table->timestamps();
         });
     }

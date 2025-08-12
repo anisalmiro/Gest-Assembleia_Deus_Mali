@@ -24,15 +24,17 @@
         <tr>
             <td>{{ $transaction->member?->first_name ?? '---' }}</td>
             <td>{{ ucfirst($transaction->type) }}</td>
-            <td>{{ number_format($transaction->amount, 2) }} MZN</td>
+            <td>@if(auth()->check() && auth()->user()->role === 'admin') {{ number_format($transaction->amount, 2) }} MZN @endif</td>
             <td>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d/m/Y') }}</td>
             <td>
-                <a href="{{ route('financial-transactions.show', $transaction) }}" class="btn btn-info btn-sm">Ver</a>
-                <a href="{{ route('financial-transactions.edit', $transaction) }}" class="btn btn-warning btn-sm">Editar</a>
-                <form action="{{ route('financial-transactions.destroy', $transaction) }}" method="POST" style="display:inline-block;">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza?')">Excluir</button>
-                </form>
+                @if(auth()->check() && auth()->user()->role === 'admin')
+                    <a href="{{ route('financial-transactions.show', $transaction) }}" class="btn btn-info btn-sm">Ver</a>
+                    <a href="{{ route('financial-transactions.edit', $transaction) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <form action="{{ route('financial-transactions.destroy', $transaction) }}" method="POST" style="display:inline-block;">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza?')">Excluir</button>
+                    </form>
+                @endif
             </td>
         </tr>
         @endforeach

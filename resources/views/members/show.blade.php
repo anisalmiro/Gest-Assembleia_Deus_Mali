@@ -23,15 +23,15 @@
                     <li class="list-group-item"><strong>Data de Casamento:</strong> {{ $member->date_marriag ? \Carbon\Carbon::parse($member->date_marriag)->format('d/m/Y') : '---' }}</li>
                     <li class="list-group-item"><strong>Batizado:</strong> {{ $member->baptized == 'y' ? 'Sim' : 'Não' }}</li>
                     <li class="list-group-item"><strong>Batizado antes do casamento:</strong> {{ $member->batizad_from_marriag == 'y' ? 'Sim' : 'Não' }}</li>
+                    <li class="list-group-item"><strong>Data de Ingresso na Igreja:</strong> {{ \Carbon\Carbon::parse($member->date_joined)->format('d/m/Y') }}</li>
                     <li class="list-group-item"><strong>Data do Batismo:</strong> {{ $member->date_baptism ? \Carbon\Carbon::parse($member->date_baptism)->format('d/m/Y') : '---' }}</li>
                     <li class="list-group-item"><strong>Casado na Igreja:</strong> {{ $member->marriag_church == 'y' ? 'Sim' : 'Não' }}</li>
-                    <li class="list-group-item"><strong>Igreja do Casamento:</strong> {{ $member->church_name_marriag ?? '---' }}</li>
+                    <li class="list-group-item"><strong>Nomeda Igreja o qual Casou:</strong> {{ $member->church_name_marriag ?? '---' }}</li>
                     <li class="list-group-item"><strong>Tem cargo na igreja:</strong> {{ $member->has_position_church == 'y' ? 'Sim' : 'Não' }}</li>
-                    <li class="list-group-item"><strong>Cargo:</strong> {{ $member->position ?? '---' }}</li>
+                    <li class="list-group-item"><strong>Cargo na Igreja:</strong> {{ $member->position ?? '---' }}</li>
                     <li class="list-group-item"><strong>Profissão:</strong> {{ $member->profition ?? '---' }}</li>
                     <li class="list-group-item"><strong>Província de Nascimento:</strong> {{ $member->province_bith ?? '---' }}</li>
-                    <li class="list-group-item"><strong>Bairro:</strong> {{ $member->neighborhood ?? '---' }}</li>
-                    <li class="list-group-item"><strong>Data de Ingresso:</strong> {{ \Carbon\Carbon::parse($member->date_joined)->format('d/m/Y') }}</li>
+                    <li class="list-group-item"><strong>Local de Residencia:</strong> {{ $member->neighborhood ?? '---' }}</li>
                     <li class="list-group-item"><strong>Endereço:</strong> {{ $member->address ?? '---' }}</li>
                     <li class="list-group-item"><strong>Telefone:</strong> {{ $member->phone_number ?? '---' }}</li>
                     <li class="list-group-item"><strong>Email:</strong> {{ $member->email ?? '---' }}</li>

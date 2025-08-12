@@ -28,6 +28,7 @@
             <td>{{ number_format($expense->amount, 2, ',', '.') }} MZN</td>
             <td>{{ \Carbon\Carbon::parse($expense->expense_date)->format('d/m/Y') }}</td>
             <td>
+                @if(auth()->check() && auth()->user()->role === 'admin')
                 <a href="{{ route('expenses.show', $expense) }}" class="btn btn-info btn-sm">Ver</a>
                 <a href="{{ route('expenses.edit', $expense) }}" class="btn btn-warning btn-sm">Editar</a>
                 <form action="{{ route('expenses.destroy', $expense) }}" method="POST" style="display:inline;">
@@ -35,6 +36,7 @@
                     @method('DELETE')
                     <button class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza?')">Excluir</button>
                 </form>
+                @endif
             </td>
         </tr>
         @endforeach

@@ -31,7 +31,7 @@
     <div class="mb-3">
         <label>Status</label>
         <select name="status" class="form-control" required>
-            @foreach(['new' => 'Novo', 'good' => 'Bom', 'damaged' => 'Danificado', 'discarded' => 'Descartado'] as $key => $label)
+            @foreach(['novo' => 'Novo', 'bom' => 'Bom', 'danificado' => 'Danificado', 'descartado' => 'Descartado'] as $key => $label)
             <option value="{{ $key }}" {{ old('status', $asset->status ?? '') == $key ? 'selected' : '' }}>{{ $label }}</option>
             @endforeach
         </select>

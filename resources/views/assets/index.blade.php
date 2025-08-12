@@ -27,15 +27,18 @@
             <td>{{ $asset->name }}</td>
             <td>{{ $asset->quantity }}</td>
             <td>{{ \Carbon\Carbon::parse($asset->acquisition_date)->format('d/m/Y') }}</td>
-            <td>{{ number_format($asset->value, 2) }}</td>
+            <td>@if(auth()->check() && auth()->user()->role === 'admin') {{ number_format($asset->value, 2) }} @endif</td>
             <td>{{ ucfirst($asset->status) }}</td>
             <td>
                 <a href="{{ route('assets.show', $asset) }}" class="btn btn-info btn-sm">Ver</a>
-                <a href="{{ route('assets.edit', $asset) }}" class="btn btn-warning btn-sm">Editar</a>
-                <form action="{{ route('assets.destroy', $asset) }}" method="POST" style="display:inline-block;">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Confirmar exclusão?')">Excluir</button>
-                </form>
+
+                @if(auth()->check() && auth()->user()->role === 'admin')
+                    <a href="{{ route('assets.edit', $asset) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <form action="{{ route('assets.destroy', $asset) }}" method="POST" style="display:inline-block;">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Confirmar exclusão?')">Excluir</button>
+                    </form>
+                @endif
             </td>
         </tr>
         @endforeach

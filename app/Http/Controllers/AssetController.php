@@ -35,7 +35,7 @@ class AssetController extends Controller
             'quantity' => 'required|integer|min:1',
             'acquisition_date' => 'required|date',
             'value' => 'required|numeric|min:0',
-            'status' => 'required|in:new,good,damaged,discarded',
+            'status' => 'required',
         ]);
 
         Asset::create($validated);
@@ -71,7 +71,7 @@ class AssetController extends Controller
             'quantity' => 'required|integer|min:1',
             'acquisition_date' => 'required|date',
             'value' => 'required|numeric|min:0',
-            'status' => 'required|in:new,good,damaged,discarded',
+            'status' => 'required',
         ]);
 
         $asset->update($validated);
@@ -86,7 +86,7 @@ class AssetController extends Controller
     public function destroy(Asset $asset)
     {
         $asset->delete();
-        
+
         return redirect()->route('assets.index')
             ->with('success', 'Item do patrimônio removido com sucesso!');
     }

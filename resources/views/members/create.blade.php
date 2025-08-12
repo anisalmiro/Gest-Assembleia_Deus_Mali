@@ -4,15 +4,15 @@
 @section('page-title', 'Registar Novo Membro')
 
 @section('page-actions')
-    <a href="{{ route('members.index') }}" class="btn btn-secondary">
-        <i class="fas fa-arrow-left me-1"></i>
-        Voltar
-    </a>
+<a href="{{ route('members.index') }}" class="btn btn-secondary">
+    <i class="fas fa-arrow-left me-1"></i>
+    Voltar
+</a>
 @endsection
 
 @section('content')
 
-    <form action="{{ route('members.store') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('members.store') }}" method="POST" enctype="multipart/form-data">
 
     @csrf
 
@@ -32,7 +32,7 @@
                     <input type="text" class="form-control @error('first_name') is-invalid @enderror"
                            id="first_name" name="first_name" value="{{ old('first_name') }}" required>
                     @error('first_name')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
@@ -40,7 +40,7 @@
                     <input type="text" class="form-control @error('last_name') is-invalid @enderror"
                            id="last_name" name="last_name" value="{{ old('last_name') }}" required>
                     @error('last_name')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
@@ -51,19 +51,19 @@
                     <input type="date" class="form-control @error('date_of_birth') is-invalid @enderror"
                            id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth') }}" required>
                     @error('date_of_birth')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-4 mb-3">
                     <label for="gender" class="form-label">Gênero *</label>
                     <select class="form-select @error('gender') is-invalid @enderror" id="gender" name="gender" required>
                         <option value="">Selecione...</option>
-                        <option value="male" {{ old('gender') === 'male' ? 'selected' : '' }}>Masculino</option>
-                        <option value="female" {{ old('gender') === 'female' ? 'selected' : '' }}>Feminino</option>
-                        <option value="other" {{ old('gender') === 'other' ? 'selected' : '' }}>Outro</option>
+                        <option value="maculino" {{ old('gender') === 'maculino' ? 'selected' : '' }}>Masculino</option>
+                        <option value="feminino" {{ old('gender') === 'feminino' ? 'selected' : '' }}>Feminino</option>
+                        <option value="outro" {{ old('gender') === 'outro' ? 'selected' : '' }}>Outro</option>
                     </select>
                     @error('gender')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -73,29 +73,35 @@
                 <div class="col-md-6 mb-3">
                     <label for="profition" class="form-label">Profissão</label>
                     <input type="text" class="form-control" id="profition" name="profition" value="{{ old('profition') }}">
+                    @error('profition')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="province_bith" class="form-label">Província de Nascimento</label>
                     <input type="text" class="form-control" id="province_bith" name="province_bith" value="{{ old('province_bith') }}">
+                    @error('province_bith')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="neighborhood" class="form-label">Bairro</label>
+                    <label for="neighborhood" class="form-label">Local de Residencia</label>
                     <input type="text" class="form-control" id="neighborhood" name="neighborhood" value="{{ old('neighborhood') }}">
                 </div>
-
             </div>
 
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label for="marital_status" class="form-label">Estado Civil *</label>
 
-                        <select id="marital_status" name="marital_status" class="form-select" onchange="toggleMarriageFields()">
+                    <select id="marital_status" name="marital_status" class="form-select" onchange="toggleMarriageFields()">
                         <option value="">Selecione...</option>
                         <option value="solteiro" {{ old('marital_status') === 'solteiro' ? 'selected' : '' }}>Solteiro(a)</option>
                         <option value="casado" {{ old('marital_status') === 'casado' ? 'selected' : '' }}>Casado(a)</option>
+                        <option value="uniao_factos" {{ old('marital_status') === 'uniao_factos' ? 'selected' : '' }}>União de Factos(a)</option>
                         <option value="divorciado" {{ old('marital_status') === 'divorciado' ? 'selected' : '' }}>Divorciado(a)</option>
                         <option value="viuvo" {{ old('marital_status') === 'viuvo' ? 'selected' : '' }}>Viúvo(a)</option>
                     </select>
@@ -109,6 +115,14 @@
                     <input type="date" class="form-control" id="date_marriag" name="date_marriag" value="{{ old('date_marriag') }}">
                 </div>
 
+                <div class="col-md-4 mb-3">
+                    <label for="date_joined" class="form-label">Data de Ingresso na igreja*</label>
+                    <input type="date" class="form-control @error('date_joined') is-invalid @enderror"
+                           id="date_joined" name="date_joined" value="{{ old('date_joined', date('Y-m-d')) }}" required>
+                    @error('date_joined')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
                 <div class="col-md-4 mb-3">
                     <label for="baptized" class="form-label">Batizado?</label>
@@ -120,20 +134,20 @@
                 </div>
 
                 <div class="col-md-4 mb-3" id="baptism_group" style="display: none;">
-                <div class="col-md-4 mb-3">
-                    <label for="date_baptism" class="form-label">Data do Batismo</label>
-                    <input type="date" class="form-control" id="date_baptism" name="date_baptism" value="{{ old('date_baptism') }}">
-                </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="date_baptism" class="form-label">Data do Batismo</label>
+                        <input type="date" class="form-control" id="date_baptism" name="date_baptism" value="{{ old('date_baptism') }}">
+                    </div>
 
-                <div class="col-md-4 mb-3">
-                    <label for="batizad_from_marriag" class="form-label">Batizado após o casamento?</label>
-                    <select class="form-select" name="batizad_from_marriag" id="batizad_from_marriag">
-                        <option value="">Selecione...</option>
-                        <option value="y" {{ old('batizad_from_marriag') == 'y' ? 'selected' : '' }}>Sim</option>
-                        <option value="n" {{ old('batizad_from_marriag') == 'n' ? 'selected' : '' }}>Não</option>
-                    </select>
+                    <div class="col-md-4 mb-3">
+                        <label for="batizad_from_marriag" class="form-label">Batizado após o casamento?</label>
+                        <select class="form-select" name="batizad_from_marriag" id="batizad_from_marriag">
+                            <option value="">Selecione...</option>
+                            <option value="y" {{ old('batizad_from_marriag') == 'y' ? 'selected' : '' }}>Sim</option>
+                            <option value="n" {{ old('batizad_from_marriag') == 'n' ? 'selected' : '' }}>Não</option>
+                        </select>
+                    </div>
                 </div>
-        </div>
             </div>
 
             <div class="row">
@@ -194,7 +208,7 @@
                     <input type="tel" class="form-control @error('phone_number') is-invalid @enderror"
                            id="phone_number" name="phone_number" value="{{ old('phone_number') }}">
                     @error('phone_number')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
@@ -202,7 +216,7 @@
                     <input type="email" class="form-control @error('email') is-invalid @enderror"
                            id="email" name="email" value="{{ old('email') }}">
                     @error('email')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
@@ -213,17 +227,10 @@
                     <textarea class="form-control @error('address') is-invalid @enderror"
                               id="address" name="address" rows="2">{{ old('address') }}</textarea>
                     @error('address')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label for="date_joined" class="form-label">Data de Ingresso *</label>
-                    <input type="date" class="form-control @error('date_joined') is-invalid @enderror"
-                           id="date_joined" name="date_joined" value="{{ old('date_joined', date('Y-m-d')) }}" required>
-                    @error('date_joined')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+
             </div>
 
             <div class="row">
@@ -252,7 +259,7 @@
                 <textarea class="form-control @error('notes') is-invalid @enderror"
                           id="notes" name="notes" rows="3">{{ old('notes') }}</textarea>
                 @error('notes')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
         </div>
@@ -273,7 +280,7 @@
                     <input type="text" class="form-control @error('spouse_first_name') is-invalid @enderror"
                            id="spouse_first_name" name="spouse_first_name" value="{{ old('spouse_first_name') }}">
                     @error('spouse_first_name')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-6 mb-3">
@@ -281,7 +288,7 @@
                     <input type="text" class="form-control @error('spouse_last_name') is-invalid @enderror"
                            id="spouse_last_name" name="spouse_last_name" value="{{ old('spouse_last_name') }}">
                     @error('spouse_last_name')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
@@ -292,7 +299,7 @@
                     <input type="date" class="form-control @error('spouse_date_of_birth') is-invalid @enderror"
                            id="spouse_date_of_birth" name="spouse_date_of_birth" value="{{ old('spouse_date_of_birth') }}">
                     @error('spouse_date_of_birth')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-4 mb-3">
@@ -300,7 +307,7 @@
                     <input type="tel" class="form-control @error('spouse_phone_number') is-invalid @enderror"
                            id="spouse_phone_number" name="spouse_phone_number" value="{{ old('spouse_phone_number') }}">
                     @error('spouse_phone_number')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-4 mb-3">
@@ -308,7 +315,7 @@
                     <input type="email" class="form-control @error('spouse_email') is-invalid @enderror"
                            id="spouse_email" name="spouse_email" value="{{ old('spouse_email') }}">
                     @error('spouse_email')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
@@ -351,107 +358,103 @@
 @section('scripts')
 <script>
 
-        function togglePositionGroup() {
+    function togglePositionGroup() {
         const hasPosition = document.getElementById('has_position_church').value;
         const positionGroup = document.getElementById('position_group');
 
         if (hasPosition === 'y') {
-        positionGroup.style.display = 'block';
-    } else {
-        positionGroup.style.display = 'none';
-        document.getElementById('position_input').style.display = 'none';
-        document.getElementById('position_input').value = '';
-    }
+            positionGroup.style.display = 'block';
+        } else {
+            positionGroup.style.display = 'none';
+            document.getElementById('position_input').style.display = 'none';
+            document.getElementById('position_input').value = '';
+        }
     }
 
-        function togglePositionInput(value) {
-        const inputField = document.getElementById('position_input');
+
+    function togglePositionInput(value) {
+        const input = document.getElementById('position_input');
         if (value === 'Outro') {
-        inputField.style.display = 'block';
-    } else {
-        inputField.style.display = 'none';
-        inputField.value = value;
+            input.style.display = 'block';
+            input.value = '';
+        } else {
+            input.style.display = 'none';
+            input.value = value;
+        }
     }
-    }
 
-        document.addEventListener('DOMContentLoaded', function () {
-        togglePositionGroup(); // Aplica estado inicial com base no valor antigo
-        togglePositionInput(document.getElementById('position_select').value);
-    });
-
-
-function toggleChurchNameField() {
+    function toggleChurchNameField() {
         const churchStatus = document.getElementById('marriag_church').value;
         const churchNameGroup = document.getElementById('church_name_marriag_group');
 
         if (churchStatus === 'y') {
-        churchNameGroup.style.display = 'block';
-    } else {
-        churchNameGroup.style.display = 'none';
-        document.getElementById('church_name_marriag').value = ''; // limpa valor se ocultar
-    }
+            churchNameGroup.style.display = 'block';
+        } else {
+            churchNameGroup.style.display = 'none';
+            document.getElementById('church_name_marriag').value = ''; // limpa valor se ocultar
+        }
     }
 
-        document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
         toggleChurchNameField(); // executa ao carregar, útil após validação com erro
     });
 
 
 
 
-function toggleBaptismDate(value) {
+    function toggleBaptismDate(value) {
         const group = document.getElementById('baptism_group');
 
         if (value === 'y') {
-        group.style.display = 'block';
+            group.style.display = 'block';
 
 
-    } else {
-        group.style.display = 'none';
-        document.getElementById('date_baptism').value = ''; // Limpa se ocultar
+        } else {
+            group.style.display = 'none';
+            document.getElementById('date_baptism').value = ''; // Limpa se ocultar
+        }
     }
-    }
 
-        // Ao carregar a página, verificar o valor antigo
-        document.addEventListener('DOMContentLoaded', function () {
+    // Ao carregar a página, verificar o valor antigo
+    document.addEventListener('DOMContentLoaded', function () {
         const currentValue = "{{ old('baptized') }}";
         toggleBaptismDate(currentValue);
     });
 
 
 
-let childCount = 0;
+    let childCount = 0;
 
-        function toggleMarriageFields() {
-            const maritalStatus = document.getElementById('marital_status').value;
+    function toggleMarriageFields() {
+        const maritalStatus = document.getElementById('marital_status').value;
 
-            const marriageDateGroup = document.getElementById('date_marriag_group');
-            const marriageDateInput = document.getElementById('date_marriag');
-            const spouseSection = document.getElementById('spouse-section');
+        const marriageDateGroup = document.getElementById('date_marriag_group');
+        const marriageDateInput = document.getElementById('date_marriag');
+        const spouseSection = document.getElementById('spouse-section');
 
-            if (maritalStatus === 'casado') {
-                if (marriageDateGroup) marriageDateGroup.style.display = 'block';
-                if (spouseSection) spouseSection.style.display = 'block';
-            } else {
-                if (marriageDateGroup) marriageDateGroup.style.display = 'none';
-                if (spouseSection) spouseSection.style.display = 'none';
-                if (marriageDateInput) marriageDateInput.value = '';
-            }
+        if (maritalStatus === 'casado' || maritalStatus === 'uniao_factos') {
+            if (marriageDateGroup) marriageDateGroup.style.display = 'block';
+            if (spouseSection) spouseSection.style.display = 'block';
+        } else {
+            if (marriageDateGroup) marriageDateGroup.style.display = 'none';
+            if (spouseSection) spouseSection.style.display = 'none';
+            if (marriageDateInput) marriageDateInput.value = '';
         }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            toggleMarriageFields(); // Inicializa com base no valor selecionado
-        });
-
-function addChild() {
-    childCount++;
-    const container = document.getElementById('children-container');
-
-    if (childCount === 1) {
-        container.innerHTML = '';
     }
 
-    const childHtml = `
+    document.addEventListener('DOMContentLoaded', function () {
+        toggleMarriageFields(); // Inicializa com base no valor selecionado
+    });
+
+    function addChild() {
+        childCount++;
+        const container = document.getElementById('children-container');
+
+        if (childCount === 1) {
+            container.innerHTML = '';
+        }
+
+        const childHtml = `
         <div class="child-item border rounded p-3 mb-3" id="child-${childCount}">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h6 class="mb-0">Filho ${childCount}</h6>
@@ -478,56 +481,56 @@ function addChild() {
                     <label class="form-label">Gênero *</label>
                     <select class="form-select" name="children[${childCount}][gender]" required>
                         <option value="">Selecione...</option>
-                        <option value="male">Masculino</option>
-                        <option value="female">Feminino</option>
-                        <option value="other">Outro</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="outro">Outro</option>
                     </select>
                 </div>
             </div>
         </div>
     `;
 
-    container.insertAdjacentHTML('beforeend', childHtml);
-}
-
-function removeChild(childId) {
-    const childElement = document.getElementById(`child-${childId}`);
-    childElement.remove();
-
-    const container = document.getElementById('children-container');
-    if (container.children.length === 0) {
-        container.innerHTML = '<p class="text-muted">Clique em "Adicionar Filho" para incluir informações dos filhos.</p>';
+        container.insertAdjacentHTML('beforeend', childHtml);
     }
-}
+
+    function removeChild(childId) {
+        const childElement = document.getElementById(`child-${childId}`);
+        childElement.remove();
+
+        const container = document.getElementById('children-container');
+        if (container.children.length === 0) {
+            container.innerHTML = '<p class="text-muted">Clique em "Adicionar Filho" para incluir informações dos filhos.</p>';
+        }
+    }
 
 
 
-        function togglePositionInput(value) {
+    function togglePositionInput(value) {
         const input = document.getElementById('position_input');
         if (value === 'Outro') {
-        input.style.display = 'block';
-        input.value = ''; // Limpa o valor, será preenchido manualmente
-    } else {
-        input.style.display = 'none';
-        input.value = value; // Atualiza o input com o valor do select
-    }
+            input.style.display = 'block';
+            input.value = ''; // Limpa o valor, será preenchido manualmente
+        } else {
+            input.style.display = 'none';
+            input.value = value; // Atualiza o input com o valor do select
+        }
     }
 
-        // Executa ao carregar a página
-        document.addEventListener('DOMContentLoaded', function () {
+    // Executa ao carregar a página
+    document.addEventListener('DOMContentLoaded', function () {
         const select = document.getElementById('position_select');
         const currentValue = "{{ old('position') }}";
         const options = ['Operador', 'Diácono', 'Evangelista', 'Presbítero', 'Pastor'];
 
         if (!options.includes(currentValue) && currentValue !== '') {
-        // Se o valor antigo não está nas opções padrão, mostrar input livre
-        togglePositionInput('Outro');
-        document.getElementById('position_input').value = currentValue;
-        select.value = 'Outro';
-    } else {
-        // Se está entre as opções padrão, garantir consistência
-        togglePositionInput(select.value);
-    }
+            // Se o valor antigo não está nas opções padrão, mostrar input livre
+            togglePositionInput('Outro');
+            document.getElementById('position_input').value = currentValue;
+            select.value = 'Outro';
+        } else {
+            // Se está entre as opções padrão, garantir consistência
+            togglePositionInput(select.value);
+        }
     });
 
 </script>

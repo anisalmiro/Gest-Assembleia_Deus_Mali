@@ -16,14 +16,14 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->date('date_of_birth');
-            $table->enum('gender', ['male', 'female', 'other']);
+            $table->string('gender');
             $table->text('address')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('profition')->nullable();
             $table->string('province_bith')->nullable();
             $table->string('neighborhood')->nullable();
-            $table->enum('marital_status', ['solteiro', 'casado', 'divorciado', 'viuvo']);
+            $table->enum('marital_status', ['solteiro', 'casado', 'divorciado', 'viuvo', 'uniao_factos']);
             $table->date('date_marriag')->nullable();
             $table->enum('baptized', ['y', 'n'])->nullable();
             $table->enum('marriag_church', ['y', 'n'])->nullable();

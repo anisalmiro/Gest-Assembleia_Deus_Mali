@@ -30,6 +30,15 @@
             <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" autocomplete="new-password" placeholder="Repita a nova senha">
         </div>
 
+        <div class="col-md-4 mb-3">
+            <label for="role" class="form-label">Nivel de Acesso</label>
+            <select class="form-select" name="role" id="role" required>
+                <option value="">Selecione...</option>
+                <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>Normal</option>
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary">Atualizar</button>
         <a href="{{ route('users.index') }}" class="btn btn-secondary">Cancelar</a>
     </form>

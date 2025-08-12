@@ -79,12 +79,14 @@
                                         <a href="{{ route('members.edit', $member) }}" class="btn btn-warning btn-sm" title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </a>
+                                        @if(auth()->check() && auth()->user()->role === 'admin')
                                         <form action="{{ route('members.destroy', $member) }}" method="POST" class="d-inline" onsubmit="return confirm('Tem certeza que deseja excluir este membro?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" title="Excluir">
                                                 <i class="fas fa-trash"></i>
                                             </button>
+                                        @endif
                                         </form>
                                     </div>
                                 </td>

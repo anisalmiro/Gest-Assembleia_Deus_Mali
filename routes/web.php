@@ -21,35 +21,27 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-// Dashboard (protegido por auth e email verificado)
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-// Rotas protegidas por autenticação
-Route::middleware('auth')->group(function () {
+// CRUD de Membros
+Route::resource('members', MemberController::class);
 
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
+// CRUD de Bens Patrimoniais
+Route::resource('assets', AssetController::class);
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
+// CRUD de Transações Financeiras
+Route::resource('financial-transactions', FinancialTransactionController::class);
 
-   // Perfil (se quiser habilitar futuramente)
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// CRUD de Despesas
+Route::resource('expenses', ExpenseController::class);
 
-    // CRUD de Membros
-    Route::resource('members', MemberController::class);
+//Rota do middleware de autenticação para proteger rotas
+Route::middleware(['auth', 'is_admin'])->group(function () {
 
-    // CRUD de Bens Patrimoniais
-    Route::resource('assets', AssetController::class);
-
-    // CRUD de Transações Financeiras
-    Route::resource('financial-transactions', FinancialTransactionController::class);
-
-    // CRUD de Despesas
-    Route::resource('expenses', ExpenseController::class);
+    Route::get('/admin', [AdminController::class, 'index']);
+    // Dashboard (protegido por auth e email verificado)
 
     // Relatórios
     Route::prefix('reports')->group(function () {
@@ -66,7 +58,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');      // Listar usuários
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit'); // Formulário edição
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');  // Atualizar usuário
+
+
+    Route::get('register', [RegisteredUserController::class, 'create'])
+        ->name('register');
+
+    Route::post('register', [RegisteredUserController::class, 'store']);
+
+    // Perfil (se quiser habilitar futuramente)
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Rotas protegidas por autenticação
 
 require __DIR__.'/auth.php';
 // Rotas de autenticação

@@ -65,7 +65,7 @@
                 <div class="text-center mb-4">
                     <h5 class="text-white d-flex align-items-center justify-content-center" style="gap: 10px;">
                         <img src="{{ asset('image/logo.png') }}" alt="Logo" style="height: 60px;" class="me-2">
-                        <span>S.G Património Ass. Deus Baixa</span>
+                        <span>Sistema de Gest&atilde;o da IEAD Baixa - Mali</span>
                     </h5>
                 </div>
 
@@ -82,26 +82,34 @@
                             Membros
                         </a>
                     </li>
+
+
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('assets.*') ? 'active' : '' }}" href="{{ route('assets.index') }}">
                             <i class="fas fa-boxes me-2"></i>
                             Patrimônio
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('financial-transactions.*') ? 'active' : '' }}" href="{{ route('financial-transactions.index') }}">
                             <i class="fas fa-hand-holding-usd me-2"></i>
                             Contribui&ccedil;&otilde;es da Igreja
                         </a>
                     </li>
+
+            @if(auth()->check() && auth()->user()->role === 'admin')
+
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('expenses.*') ? 'active' : '' }}" href="{{ route('expenses.index') }}">
                             <i class="fas fa-money-bill-wave me-2"></i>
                             Despesas
                         </a>
                     </li>
-
+             @endif
                     <hr class="my-3" style="border-color: rgba(255, 255, 255, 0.3);">
+
+              @if(auth()->check() && auth()->user()->role === 'admin')
 
                     <li class="nav-item">
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -127,7 +135,6 @@
                         </a>
                     </li>
 
-
                     <li class="nav-item">
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                             <span style="color: rgba(255, 255, 255, 0.6);">Usuários</span>
@@ -147,6 +154,9 @@
                             Listar Usuários
                         </a>
                     </li>
+
+            @endif
+
 
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}">
