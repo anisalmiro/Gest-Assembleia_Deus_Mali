@@ -297,7 +297,7 @@
                 <div class="col-md-4 mb-3">
                     <label for="spouse_date_of_birth" class="form-label">Data de Nascimento</label>
                     <input type="date" class="form-control @error('spouse_date_of_birth') is-invalid @enderror"
-                           id="spouse_date_of_birth" name="spouse_date_of_birth" value="{{ old('spouse_date_of_birth') }}">
+                           id="spouse_date_of_birth" name="spouse_date_of_birth" value="{{ old('spouse_date_of_birth') }}" required>
                     @error('spouse_date_of_birth')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

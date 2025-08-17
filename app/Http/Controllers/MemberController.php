@@ -32,90 +32,84 @@ class MemberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
 
+public function store(Request $request)
+{
+    $data = $request->all();
 
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'date_of_birth' => 'required|date',
-            'gender' => 'required',
-            'address' => 'nullable|string',
-            'phone_number' => 'nullable|string|max:20',
-            'email' => 'nullable|email|unique:members,email',
-            'profition' => 'nullable|string|max:255',
-            'province_bith' => 'nullable|string|max:255',
-            'neighborhood' => 'nullable|string|max:255',
-            'marital_status' => 'required|in:solteiro,casado,divorciado,viuvo,uniao_factos',
-            'date_marriag' => 'nullable|date',
-            'baptized' => 'nullable|in:y,n',
-            'marriag_church' => 'nullable|in:y,n',
-            'church_name_marriag' => 'nullable|string',
-            'date_baptism' => 'nullable|date',
-            'batizad_from_marriag' => 'required|in:y,n',
-            'has_position_church' => 'required|in:y,n',
-            'position' => 'nullable|string',
-            'date_joined' => 'required|date',
-            'notes' => 'nullable|string',
-            'photo' => 'nullable|image|max:2048',
+    // Upload da foto
+    if ($request->hasFile('photo')) {
+        $file = $request->file('photo');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->storeAs('public/members_photos', $filename);
+        $data['photo'] = $filename;
+    }
 
-            // Dados da esposa (se casado)
-            'spouse_first_name' => 'nullable|string|max:255',
-            'spouse_last_name' => 'nullable|string|max:255',
-            'spouse_date_of_birth' => 'nullable|date',
-            'spouse_phone_number' => 'nullable|string|max:20',
-            'spouse_email' => 'nullable|email|unique:spouses,email',
+    // ✅ Verificar duplicado de email
+    if (!empty($data['email']) && Member::where('email', $data['email'])->exists()) {
+        return redirect()->back()
+            ->withInput()
+            ->with('error', 'Já existe um membro com este email.');
+    }
 
-            // Dados dos filhos
-            'children' => 'nullable|array',
-            'children.*.first_name' => 'required|string|max:255',
-            'children.*.last_name' => 'required|string|max:255',
-            'children.*.date_of_birth' => 'required|date',
-            'children.*.gender' => 'required|string|max:255',
+    // Criar membro
+    $member = Member::create([
+        'first_name'        => $data['first_name'] ?? null,
+        'last_name'         => $data['last_name'] ?? null,
+        'date_of_birth'     => $data['date_of_birth'] ?? null,
+        'gender'            => $data['gender'] ?? null,
+        'address'           => $data['address'] ?? null,
+        'phone_number'      => $data['phone_number'] ?? null,
+        'email'             => $data['email'] ?? null,
+        'profition'         => $data['profition'] ?? null,
+        'province_bith'     => $data['province_bith'] ?? null,
+        'neighborhood'      => $data['neighborhood'] ?? null,
+        'marital_status'    => $data['marital_status'] ?? null,
+        'date_marriag'      => $data['date_marriag'] ?? null,
+        'baptized'          => $data['baptized'] ?? null,
+        'marriag_church'    => $data['marriag_church'] ?? null,
+        'church_name_marriag' => $data['church_name_marriag'] ?? null,
+        'date_baptism'      => $data['date_baptism'] ?? null,
+        'batizad_from_marriag' => $data['batizad_from_marriag'] ?? null,
+        'has_position_church'  => $data['has_position_church'] ?? null,
+        'position'          => $data['position'] ?? null,
+        'date_joined'       => $data['date_joined'] ?? null,
+        'notes'             => $data['notes'] ?? null,
+        'photo'             => $data['photo'] ?? null,
+    ]);
+
+    // Criar esposa se casado
+    if (in_array(($data['marital_status'] ?? ''), ['casado', 'uniao_factos'])
+        && !empty($data['spouse_first_name'])) {
+        Spouse::create([
+            'member_id'     => $member->id,
+            'first_name'    => $data['spouse_first_name'] ?? null,
+            'last_name'     => $data['spouse_last_name'] ?? null,
+            'date_of_birth' => $data['spouse_date_of_birth'] ?? null,
+            'phone_number'  => $data['spouse_phone_number'] ?? null,
+            'email'         => $data['spouse_email'] ?? null,
         ]);
+    }
 
-        #dd($validated);
 
-        // Gerenciar upload da foto
-        if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $path = $file->storeAs('public/members_photos', $filename);
-            $validated['photo'] = $filename;
-        }
-       # dd($validated);
-        // Criação do membro
-        $member = Member::create($validated);
-
-        // Criar esposa se fornecida
-        if ($request->filled('spouse_first_name') && $validated['marital_status'] === 'casado') {
-            Spouse::create([
-                'member_id' => $member->id,
-                'first_name' => $validated['spouse_first_name'],
-                'last_name' => $validated['spouse_last_name'],
-                'date_of_birth' => $validated['spouse_date_of_birth'],
-                'phone_number' => $validated['spouse_phone_number'],
-                'email' => $validated['spouse_email'],
+    // Criar filhos
+    if (!empty($data['children']) && is_array($data['children'])) {
+        foreach ($data['children'] as $child) {
+            Child::create([
+                'member_id'     => $member->id,
+                'first_name'    => $child['first_name'] ?? null,
+                'last_name'     => $child['last_name'] ?? null,
+                'date_of_birth' => $child['date_of_birth'] ?? null,
+                'gender'        => $child['gender'] ?? null,
             ]);
         }
-
-        // Criar filhos se fornecidos
-        if (!empty($validated['children'])) {
-            foreach ($validated['children'] as $childData) {
-                Child::create([
-                    'member_id' => $member->id,
-                    'first_name' => $childData['first_name'],
-                    'last_name' => $childData['last_name'],
-                    'date_of_birth' => $childData['date_of_birth'],
-                    'gender' => $childData['gender'],
-                ]);
-            }
-        }
-
-        return redirect()->route('members.index')
-            ->with('success', 'Membro cadastrado com sucesso!');
     }
+
+    return redirect()->route('members.index')
+        ->with('success', 'Membro cadastrado com sucesso!');
+}
+
+
 
 
     /**
