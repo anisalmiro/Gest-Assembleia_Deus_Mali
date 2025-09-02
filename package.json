@@ -20,5 +20,10 @@
   "build": "vite build",
   "heroku-postbuild": "npm run build",
     "start": "node index.js"
-}
+},
+    "engines": {
+          "node": "18.x",
+          "npm": "9.x"
+        }
+
 }
