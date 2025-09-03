@@ -23,17 +23,27 @@ class DatabaseSeeder extends Seeder
     {
 
         DB::table('users')->insert([
-            [
-                'name' => 'Anisio',
-                'email' => 'anisio.bule@gmail.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('12345678'), // Troque por uma senha segura
-                'role' => 'admin',
-                'remember_token' => Str::random(10),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+                    [
+                        'name' => 'demo',
+                        'email' => 'demo@app.com',
+                        'email_verified_at' => now(),
+                        'password' => Hash::make('demo123$'), // Troque por uma senha segura
+                        'role' => 'admin',
+                        'remember_token' => Str::random(10),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ],
+                    [
+                        'name' => 'demo2',
+                        'email' => 'demo2@app.com',
+                        'email_verified_at' => now(),
+                        'password' => Hash::make('demo123$'), // Troque por uma senha segura
+                        'role' => 'user',
+                        'remember_token' => Str::random(10),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ],
+                ]);
     }
 
 }
